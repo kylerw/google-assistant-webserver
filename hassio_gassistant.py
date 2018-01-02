@@ -34,6 +34,15 @@ class BroadcastMessage(Resource):
 
 api.add_resource(BroadcastMessage, '/broadcast_message')
 
+class Command(Resource):
+    def get(self):
+        message = request.args.get('message', default = 'This is a test!')
+        text_query = '"'+message+'"'
+        display_text = assistant.assist(text_query=text_query)
+        return {'status': 'OK'}
+
+api.add_resource(Command, '/command')
+
 class GoogleTextAssistant(object):
     """Assistant that supports text based conversations.
 

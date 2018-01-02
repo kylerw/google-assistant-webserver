@@ -1,19 +1,20 @@
-FROM lsiobase/alpine.python:3.7
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="kylerw"
+FROM multiarch/debian-debootstrap:amd64-stretch
 
 # Install packages
-RUN \
- pip install jq tzdata libportaudio2 alsa-utils \
-   google-assistant-library google-auth \
-   requests_oauthlib cherrypy flask flask-jsonpify flask-restful \
-   grpcio google-assistant-grpc google-auth-oauthlib && \
-   rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y jq tzdata python3 python3-dev python3-pip \
+        python3-six python3-pyasn1 libportaudio2 alsa-utils \
+    && pip3 install --upgrade pip \
+    && pip3 install --upgrade google-assistant-library google-auth \
+        requests_oauthlib cherrypy flask flask-jsonpify flask-restful \
+        grpcio google-assistant-grpc google-auth-oauthlib \
+    && apt-get remove -y --purge python3-pip python3-dev \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
+   
+   
 # Copy data
 COPY run.sh /
 COPY *.py /

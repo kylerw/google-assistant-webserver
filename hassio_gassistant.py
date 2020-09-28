@@ -34,6 +34,21 @@ class BroadcastMessage(Resource):
 
 api.add_resource(BroadcastMessage, '/broadcast_message')
 
+class BroadcastRoomMessage(Resource):
+    def get(self):
+        message = request.args.get('message', default = 'This is a test!')
+        room = request.args.get('room', default = '')
+        
+        if room != '':
+            text_query = 'broadcast to '+room+' '+message
+        else:
+            text_query = 'broadcast '+message
+            
+        display_text = assistant.assist(text_query=text_query)
+        return {'status': 'OK'}
+
+api.add_resource(BroadcastMessageRoom, '/broadcast_room_message')
+
 class Command(Resource):
     def get(self):
         message = request.args.get('message', default = 'This is a test!')

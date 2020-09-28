@@ -47,7 +47,7 @@ class BroadcastRoomMessage(Resource):
         display_text = assistant.assist(text_query=text_query)
         return {'status': 'OK'}
 
-api.add_resource(BroadcastMessageRoom, '/broadcast_room_message')
+api.add_resource(BroadcastRoomMessage, '/broadcast_room_message')
 
 class Command(Resource):
     def get(self):
